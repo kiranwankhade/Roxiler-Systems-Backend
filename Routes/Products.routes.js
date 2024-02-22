@@ -34,7 +34,7 @@ productsRouter.get('/', async (req, res) => {
             await TransactionModel.insertMany(transactionsWithMonth);
             res.send(TransactionModel);
         } else {
-            res.json({ message: 'Data already exists and could not be added', transactionData : TransactionModel });
+            res.json({ message: 'Data already exists and could not be added', transactionData : `${TransactionModel}` });
         }
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error: error.message });
