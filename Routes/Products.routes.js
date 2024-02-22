@@ -32,9 +32,9 @@ productsRouter.get('/', async (req, res) => {
         // If the count is less than 60, insert transactions
         if (count < 60) {
             await TransactionModel.insertMany(transactionsWithMonth);
-            res.send(TransactionModel)
+            res.send(TransactionModel);
         } else {
-            res.send(TransactionModel)
+            res.json({ message: 'Data already exists and could not be added', transactionData : TransactionModel });
         }
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error: error.message });
