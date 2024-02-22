@@ -112,9 +112,7 @@ searchRouter.get("/", async (req, res) => {
       const totalPages = Math.ceil(totalCount / perPage);
 
       const skip = (page - 1) * perPage;
-      const transactions = await TransactionModel.find()
-        .skip(skip)
-        .limit(perPage);
+      const transactions = await TransactionModel.find().skip(skip).limit(perPage)
 
       res.json({ transactions, totalPages });
     }
