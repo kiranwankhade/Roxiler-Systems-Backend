@@ -43,10 +43,21 @@ const searchTransactions = async (searchText, res) => {
       };
     }
 
-    // Fetch all transactions matching the query
-    const transactions = await TransactionModel.find(query);
+    // // Fetch all transactions matching the query
+    // const transactions = await TransactionModel.find(query);
 
-    res.json(transactions);
+    // res.json(transactions);
+    
+     // Fetch all transactions matching the query
+     const totalCount = await TransactionModel.countDocuments(query);
+     const totalPages = Math.ceil(totalCount / perPage);
+ 
+     const skip = (page - 1) * perPage;
+     const transactions = await TransactionModel.find(query)
+       .skip(skip)
+       .limit(perPage);
+ 
+     return { transactions, totalPages };
   } catch (error) {
     res
       .status(500)
@@ -65,16 +76,47 @@ searchRouter.get("/", async (req, res) => {
 
     const delay = 300; // Adjust the debounce delay as needed
 
-    // Execute the search only if there are search words
-    if (searchText.length > 0) {
-        // Debounce the search function
-        setTimeout(() => {
-            searchTransactions(searchText, res);
-        }, delay);
+    // // Execute the search only if there are search words
+    // if (searchText.length > 0) {
+    //     // Debounce the search function
+    //     setTimeout(() => {
+    //         searchTransactions(searchText, res);
+    //     }, delay);
+    // } else {
+    //     // If search parameter is empty, return all records with pagination
+    //     const transactions = await TransactionModel.find().skip(skip).limit(perPage);
+    //     res.json(transactions);
+    // }
+
+     // Execute the search only if there are search words
+     if (searchText.length > 0) {
+      // Debounce the search function
+      setTimeout(async () => {
+        try {
+          const { transactions, totalPages } = await searchTransactions(
+            searchText,
+            page,
+            perPage
+          );
+          res.json({ transactions, totalPages });
+        } catch (error) {
+          res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+          });
+        }
+      }, delay);
     } else {
-        // If search parameter is empty, return all records with pagination
-        const transactions = await TransactionModel.find().skip(skip).limit(perPage);
-        res.json(transactions);
+      // If search parameter is empty, return all records with pagination
+      const totalCount = await TransactionModel.countDocuments();
+      const totalPages = Math.ceil(totalCount / perPage);
+
+      const skip = (page - 1) * perPage;
+      const transactions = await TransactionModel.find()
+        .skip(skip)
+        .limit(perPage);
+
+      res.json({ transactions, totalPages });
     }
 
   } catch (error) {
@@ -83,6 +125,32 @@ searchRouter.get("/", async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 });
+
+searchRouter.get("/byMonth",async (req, res) =>{
+  try {
+    const { month, page = 1, perPage = 10 } = req.query;
+    const skip = (page - 1) * perPage;
+
+    // Query transactions for the specified month
+    const transactions = await TransactionModel.find({ month })
+        .skip(skip)
+        .limit(perPage);
+
+    // Query total count of transactions for pagination
+    const totalCount = await TransactionModel.countDocuments({ month });
+
+    // Calculate total pages based on total count and perPage
+    const totalPages = Math.ceil(totalCount / perPage);
+
+    res.json({
+        data: transactions,
+        totalPages: totalPages,
+    });
+} catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+}
+})
 
 module.exports = {
   searchRouter,
