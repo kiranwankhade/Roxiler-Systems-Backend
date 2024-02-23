@@ -54,6 +54,7 @@ The backend fetches data from a third-party API endpoint and initializes the dat
 ## Frontend
 
 ### Transactions Page
+** https://frontend-azure-nine-78.vercel.app/
 
 #### Transactions Table
 
