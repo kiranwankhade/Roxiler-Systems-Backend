@@ -102,24 +102,36 @@ searchRouter.get("/", async (req, res) => {
   }
 });
 
-searchRouter.get("/byMonth", async (req, res) => {
+searchRouter.get("/search_month", async (req, res) => {
   try {
     const { month, page = 1, perPage = 10 } = req.query;
     const skip = (page - 1) * perPage;
 
+    let query = {};
+
+    
+    // If month parameter is provided and not empty, filter transactions by month
+    if (month && month.trim() !== "") {
+      query = { month };
+    }
+
     // Query transactions for the specified month
-    const transactions = await TransactionModel.find({ month })
+    const transactions = await TransactionModel.find(query)
       .skip(skip)
       .limit(perPage);
 
+    // // Query total count of transactions for pagination
+    // const totalCount = await TransactionModel.countDocuments({ month });
+
     // Query total count of transactions for pagination
-    const totalCount = await TransactionModel.countDocuments({ month });
+    const totalCountQuery = month && month.trim() !== "" ? { month } : {};
+    const totalCount = await TransactionModel.countDocuments(totalCountQuery);
 
     // Calculate total pages based on total count and perPage
     const totalPages = Math.ceil(totalCount / perPage);
 
     res.json({
-      data: transactions,
+      transactions: transactions,
       totalPages: totalPages,
     });
   } catch (error) {
