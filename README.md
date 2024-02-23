@@ -93,3 +93,22 @@ The backend fetches data from a third-party API endpoint and initializes the dat
 - Axios
 - Chakra UI
 
+##Screenshort Of the App
+- Dashboard Page
+
+![RS-1](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/78c2c69e-cc78-4a24-bd95-4261c34b3b56)
+
+![RS-2](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/9938305c-b5a0-4a3b-b386-bcc7f492bcef)
+
+![RS-3](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/57274855-7d3a-4daa-991e-7b23480793dd)
+
+- Statistics Data of particular Month
+![RS-4](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/89fd08d2-defe-4779-b14d-c8fd9daa911b)
+  
+- Bar Chart Data of particular Month
+![RS-5](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/4210cff1-b75f-47ea-aee2-00a769fd21f3)
+
+- Pie Data of particular Month
+![RS-6](https://github.com/kiranwankhade/Roxiler-Systems-Backend/assets/49937312/ba1c48d6-f22a-4de5-8187-3a57f18e5e91)
+
+
