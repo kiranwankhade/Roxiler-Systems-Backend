@@ -82,9 +82,7 @@ searchRouter.get("/", async (req, res) => {
       }, delay);
     } else {
       // If search parameter is empty, return all records with pagination
-      const transactions =  await TransactionModel.find().maxTimeMS(30000);
-        // .skip(skip)
-        // .limit(perPage);
+      const transactions = await TransactionModel.find().maxTimeMS(30000);
 
       // Calculate total pages based on total count and perPage
       const totalPages = Math.ceil(transactions.length / perPage);
